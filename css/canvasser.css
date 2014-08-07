@@ -1,0 +1,140 @@
+body
+{
+    font-size:          40pt;
+}
+
+input
+{
+    font-size:          inherit;
+}
+
+.line
+{
+    width:          100%;
+    padding:        2%;
+}
+
+.state
+{
+    display:            inline-block;
+    float:              right;
+    padding:            1%;
+    margin-right:       1%;
+}
+
+.headContainer
+{
+    background-color:   #D0D0FF;
+    margin:             1%;
+    padding:            1%;
+}
+
+.headEntry
+{
+    display:            inline-block;
+    margin-left:        2%;
+}
+
+.entry
+{
+    background-color:   #F0F0FF;
+    margin:             1%;
+    padding:            2%;
+}
+
+.button
+{
+    display:            inline-block;
+    background-color:   #8080FF;
+    padding:            1%;
+    margin-left:        1%;
+}
+
+.address
+{
+    display:            inline-block;
+}
+
+.next
+{
+    display:            inline-block;
+    float:              right;
+    background-color:   #8080FF;
+}
+
+.resident
+{
+    display:            inline-block;
+}
+
+.residentButtons
+{
+    display:            inline-block;
+    float:              right;
+    width:              520px;
+}
+
+.rightmost
+{
+    float:              right;
+}
+
+.flag
+{
+    display:            inline-block;
+    width:              60px;
+    background-color:   #FF0000;
+}
+
+.flagContainer
+{
+    display:            inline-block;
+    float:              right;
+}
+
+.container
+{
+    display:            inline-block;
+}
+
+.picker
+{
+    display:            inline-block;
+    width:              33%;
+    margin-bottom:      2%;
+}
+
+.radio
+{
+}
+
+.label
+{
+    display:            inline-block;
+    margin-left:        3%;
+}
+
+.toggleOn
+{
+    display:            inline-block;
+    width:              40px;
+    border-width:       10px;
+    border-style:       solid;
+    background-color:   #8080FF;
+    border-color:       #0000FF;
+}
+
+.toggleOff
+{
+    display:            inline-block;
+    width:              40px;
+    border-width:       10px;
+    border-style:       solid;
+    border-color:       #0000FF;
+    background-color:   #FFFFFF;
+}
+
+.newButtons
+{
+    padding:            5px;
+}
