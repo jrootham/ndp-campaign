@@ -26,19 +26,20 @@
 
     var makeErrorStatus = function(that) {
         return function(error) {
-            that.setState({status:error.message})
+            that.setState({status:error.message, sent:false})
         }
     }
+
     var Token = React.createClass({
         getInitialState: function(){
             return ({status: " ", sent:false})
         },
 
-        sendToken: function(event) {
+        sendIdentifier: function(event) {
             if (this.state.sent === false) {
                 this.setState({status:"Sending", sent:true})
-                var token = document.getElementById("token").value
-                var result = localDepends.message.post("campaign/signup", {token: token})
+                var identifier = document.getElementById("identifier").value
+                var result = localDepends.message.post("campaign/signup", {identifier: identifier})
                 result.then(makeGoodStatus(this), makeErrorStatus(this))
             }
         },
@@ -49,12 +50,12 @@
                     <div className="line">
                         <div>
                             Identifier:
-                            <input className="text" type="text" id="token" length="10" size="10"/>
+                            <input className="text" type="text" id="identifier" />
                         </div>
                     </div>
                     <div className="line">
-                        <div className="button" onClick={this.sendToken}>
-                        Load Identifier
+                        <div className="button" onClick={this.sendIdentifier}>
+                            Load Identifier
                         </div>
                     </div>
                     <div className="line" id="status">

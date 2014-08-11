@@ -7,12 +7,22 @@
 (function () {
     "use strict"
 
-    var recruit = require("./recruit.js")
+    var recruit = require("./recruit")
+    var admin = require("./admin")
 
     var routeTable = {
         campaign: {
             signup: {
                 POST: recruit.signup
+            },
+            admin: {
+                enter: {
+                    POST: admin.enter
+                },
+                signup: {
+                    POST: admin.signup
+                }
+
             }
         }
     }

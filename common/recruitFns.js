@@ -7,6 +7,9 @@
 
     var crypto = require("crypto")
 
+    var fieldArray =["firstName", "lastName", "address", "street", "apartment", "postalCode",
+        "homePhone", "cellPhone", "email"]
+
     var makeToken = function(size) {
         var buffSize = size * 2
         var buffer = crypto.randomBytes(buffSize)
@@ -28,8 +31,15 @@
         return plainToken
     }
 
+    var save = function(depends, owner, recruit) {
+        return depends.dataAccess.createRecruit(owner, recruit)
+    }
+
+
     exports.makeToken = makeToken
     exports.makeAndStoreCookie = makeAndStoreCookie
+    exports.save = save
+    exports.fieldArray = fieldArray
 /*
     var entry = {
         id: log.length + 1,

@@ -9,10 +9,82 @@
     "use strict"
 
     var React = require("react")
+    var recruitFns = require("../common/recruitFns")
+
+    var fieldArray = recruitFns.fieldArray
 
     var localDepends
 
+    var getValue = function(name) {
+        return document.getElementById(name).value
+    }
+
+    var validate = function(name) {
+        return getValue(name)
+    }
+
+    var empty = function(name) {
+        document.getElementById(name).value = ""
+    }
+
+    var emptyInputs = function(){
+        fieldArray.forEach(function(field){empty(field)})
+    }
+
+    var makeGoodStatus = function(that) {
+        return function(response) {
+            if (response.success){
+                that.setState({status:"Sent: OK", sent:false})
+                emptyInputs()
+            }
+            else {
+                that.setState({
+                    status:response.error,
+                    sent:false
+                })
+            }
+        }
+    }
+
+    var makeErrorStatus = function(that) {
+        return function(error) {
+            that.setState({status:error.message, sent:false})
+        }
+    }
+
+
     var Enter = React.createClass({
+        getInitialState: function(){
+            return ({status: " ", sent:false})
+        },
+
+        submit: function() {
+            if (!this.state.sent) {
+                this.setState({status:"Sending", sent:true})
+                var result = localDepends.message.post("campaign/admin/enter", data)
+                result.then(makeGoodStatus(this), makeErrorStatus(this))
+            }
+        },
+
+        render: function() {
+            return (
+                <div>
+                    <Recruit />
+                    <div>
+                        <div className="button" onClick={this.submit}>Submit</div>
+                    </div>
+
+                    <div>
+                        {this.state.status}
+                    </div>
+
+                </div>
+            )
+        }
+
+    })
+
+    var Recruit = React.createClass({
 
         render: function() {
             return (<div>
@@ -69,10 +141,6 @@
                     <div className="enterInput">
                         <input type="text" id="email" />
                     </div>
-                </div>
-
-                <div>
-                    <div className="button" onClick={this.submit}>Submit</div>
                 </div>
 
             </div>)

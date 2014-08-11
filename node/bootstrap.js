@@ -6,7 +6,7 @@
     "use strict"
 
     var fs = require("fs")
-    var userFns = require("./userFns")
+    var userFns = require("./recruitFns")
 
     var main = function(depends) {
         var dataAccess = depends.dataAccess

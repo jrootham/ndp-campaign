@@ -53,7 +53,6 @@
 
             req.onload = function() {
               if (req.status == 200) {
-                  console.log(req.response)
                   resolve(JSON.parse(req.response))
               }// silly safari
               else {
@@ -77,7 +76,7 @@
         });
     }
 
-    var getJSON = function(url, params) {
+    var get = function(url, params) {
         var options = { headers: { 'Accept': 'application/json' }
                       ,  method: 'GET'
                       ,    type: 'json'
@@ -98,6 +97,6 @@
         return xhr(url, options, data)
     }
 
-    exports.getJSON = getJSON
+    exports.get = get
     exports.post = post
 })()

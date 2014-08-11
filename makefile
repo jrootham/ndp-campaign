@@ -71,8 +71,9 @@ proxies/admin/assign.html: \
 # node server
 
 proxies/node/main.js: \
-	ship/node/main.js ship/node/server.js ship/common/defs.js ship/node/routeTable.js ship/node/recruit.js \
-	ship/test/dataAccess.js ship/node/userFns.js
+	ship/node/main.js  ship/node/recruit.js ship/node/admin.js \
+	ship/node/server.js ship/common/defs.js ship/node/routeTable.js ship/common/recruitFns.js \
+	ship/test/dataAccess.js ship/test/credentialOne.js ship/test/credentialZero.js ship/test/permissions.js
 
 # create superusers
 
@@ -82,23 +83,23 @@ proxies/node/bootstrapMain.js: \
 # browserify dependencies
 
 scripts/canvasserApp.js: canvasser/canvasser.js canvasserDest/canvasserJSX.js \
-	js/fetchData.js js/keyFunctions.js js/serialize.js common/find.js
+	js/fetchData.js js/keyFunctions.js js/serialize.js common/find.js js/message.js
 	browserify canvasser/canvasser.js > scripts/canvasserApp.js
 
 scripts/loadApp.js: canvasser/load.js canvasserDest/loadJSX.js
-	browserify canvasser/load.js > scripts/loadApp.js
+	browserify canvasser/load.js > scripts/loadApp.js js/message.js
 
 scripts/signupApp.js: canvasser/signup.js  canvasserDest/signupJSX.js js/message.js
-	browserify canvasser/signup.js > scripts/signupApp.js
+	browserify canvasser/signup.js > scripts/signupApp.js js/message.js
 
-scripts/recruitApp.js: admin/recruit.js adminDest/recruitJXS.js
-	browserify admin/recruit.js > scripts/recruitApp.js
+scripts/recruitApp.js: admin/recruit.js adminDest/recruitJSX.js
+	browserify admin/recruit.js > scripts/recruitApp.js js/message.js
 
-scripts/enterApp.js: admin/enter.js adminDest/enterJXS.js
-	browserify admin/enter.js > scripts/enterApp.js
+scripts/enterApp.js: admin/enter.js adminDest/enterJSX.js
+	browserify admin/enter.js > scripts/enterApp.js js/message.js
 
-scripts/assignApp.js: admin/assign.js adminDest/assignJXS.js
-	browserify admin/assign.js > scripts/assignApp.js
+scripts/assignApp.js: admin/assign.js adminDest/assignJSX.js
+	browserify admin/assign.js > scripts/assignApp.js js/message.js
 
 
 # clean up the tree

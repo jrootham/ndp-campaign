@@ -6,18 +6,19 @@
     "use strict"
 
     var fs = require("fs")
+    var ent = require("ent")
 
     var filenames = {
-        users: "../data/recruits.json",
+        recruitList: "../data/recruits.json",
         keys: "../data/keys.json"
     }
 
-    var recruitList = JSON.parse(fs.readFileSync(filenames.users))
-    var keyList = JSON.parse(fs.readFileSync(filenames.keys))
+    var recruitList = JSON.parse(fs.readFileSync(filenames.recruitList))
+    var identifierList = JSON.parse(fs.readFileSync(filenames.keys))
 
-    var write =- function() {
-        fs.writeFileSync(filenames.users, JSON.stringify(recruitList))
-        fs.writeFileSync(filenames.keys, JSON.stringify(keyList))
+    var write = function() {
+        fs.writeFileSync(filenames.recruitList, JSON.stringify(recruitList))
+        fs.writeFileSync(filenames.keys, JSON.stringify(identifierList))
     }
 
     var createRecruit = function(ownerId, newRecruit) {
@@ -42,15 +43,23 @@
     }
 
     var testAndRemoveIdentifier = function(identifier){
-        var key = keyList.find(function() {key.identifier === identifier  && key.valid})
+        var found = identifierList.find(function(current) {current.identifier === identifier  && current.valid})
 
-        if (key) {
-            key.valid = false
-            return key.recruitID
+        if (found) {
+            found.valid = false
+            return found.recruitID
         }
         else {
             return 0
         }
+    }
+
+    var findHashedToken = function(hashedToken) {
+        var recruit = recruitList.find(function(recruit){
+           recruit.hashedToken ? hashedToken === recruit.hashedToken : false
+        })
+
+        return recruit ? recruit.id : 0
     }
 
     var saveHashedToken = function(recruitId, hashedToken) {
@@ -58,11 +67,23 @@
         recruitList[index].hashedToken = hashedToken
     }
 
+    var buildRow = function(columnArray, data) {
+        var result = {}
+        columnArray.forEach(function(column) {
+            if (data[column]) {
+                result[column] = ent.encode(data[column])
+            }
+        })
+
+        return result
+    }
+
     exports.createRecruit = createRecruit
     exports.testAndRemoveIdentifier = testAndRemoveIdentifier
     exports.saveHashedToken = saveHashedToken
     exports.insertIdentifier = insertIdentifier
     exports.createRecruit = createRecruit
+    exports.buildRow = buildRow
 
 
 })()

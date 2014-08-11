@@ -11,11 +11,11 @@
 
     var router = function(depends, request, response, data) {
         var tablePointer = depends.routeTable
-        if (!tablePointer) depends.fail( response, {error: "No routing table"})
+        if (!tablePointer) depends.fail( response, {error: "No routing table"}, {})
 
         var pathList = request.url.split('/')
 
-        if (pathList.length === 0) depends.fail( response, {error: "Empty routing input"})
+        if (pathList.length === 0) depends.fail( response, {error: "Empty routing input"}, {})
 
         if (pathList[0] === "") pathList.shift()
 
@@ -36,8 +36,6 @@
             }
         }
 
-        console.log(found)
-
         if (found && found[request.method]) {
             found[request.method](depends, request, response, data)
         }
@@ -47,7 +45,7 @@
         }
     }
 
-    var headers = function(response, headers) {
+    var sendHeaders = function(response, headers) {
         var sendHeaders = {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin' : '*'
@@ -60,19 +58,20 @@
         response.writeHead(200, sendHeaders)
     }
 
-    var success = function(response, resultObject) {
+    var success = function(response, resultObject, headers) {
+        sendHeaders(response, headers)
         resultObject.success = true
         response.end(JSON.stringify(resultObject))
     }
 
-    var fail = function(response, resultObject) {
-        resultObject.success = false
-        response.end(JSON.stringify(resultObject))
+    var fail = function(response, error, headers) {
+        sendHeaders(response, headers)
+        error.success = false
+        response.end(JSON.stringify(error))
     }
 
     var server = function(depends) {
         depends.http.createServer(function (request, response) {
-            depends.headers = headers
             depends.success = success
             depends.fail = fail
 

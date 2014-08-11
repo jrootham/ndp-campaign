@@ -8,40 +8,24 @@
 (function () {
     "use strict"
 
-    var userFns = require("./userFns")
-
-    var CookieHeader = function(depends, token) {
-        var cookie = "token=" + token
-        cookie += " Max-Age=" + (180 * 24 * 60 * 60)
-        cookie += " HttpOnly"
-
-        if (depends.isUsingHTTPS()) {
-            cookie += " Secure"
-        }
-
-        var header ={}
-        header["Set-Cookie"] = cookie
-
-        return header
-    }
+    var userFns = require("../common/recruitFns")
 
     var signup = function(depends, request, response, data) {
         var dataAccess = depends.dataAccess
-        var identifier = data.token
+        var identifier = data.identifier
 
         var recruitId = dataAccess.testAndRemoveIdentifier(identifier)
 
         if (recruitId > 0)
         {
-            var token = userFns.makeAndStoreCookie(depends, recruitId)
-            var cookieHeader = CookieHeader(depends, token)
-            depends.headers(response, cookieHeader)
+            var token = recruitFns.makeAndStoreCookie(depends, recruitId)
+            var cookies = new depends.Cookies(request, response)
+            cookies.set("token", token, {"Max-Age":  (180 * 24 * 60 * 60)})
 
-            depends.success(response, {})
+            depends.success(response, {}, {})
         }
         else {
-            depends.headers(response)
-            depends.fail(response, {error:"Identifier not found"})
+            depends.fail(response, {error:"Identifier not found"}, {})
         }
     }
 

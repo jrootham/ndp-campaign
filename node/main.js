@@ -7,15 +7,19 @@
 
     var dataAccess = require("../test/dataAccess")
     var http = require('http')
+    var Cookies = require('cookies')
     var server = require("./server")
     var routeTable = require("./routeTable").routeTable
-    var isUsingHTTPS = function() {return false}
+    var credential = require("../test/credentialOne")
+    var permissions = require("../test/permissions")
 
     var depends = {
-        dataAccess: dataAccess,
-        http: http,
-        isUsingHTTPS: isUsingHTTPS,
-        routeTable: routeTable
+        dataAccess:     dataAccess,
+        http:           http,
+        routeTable:     routeTable,
+        credential:     credential.credential,
+        Cookies:        Cookies,
+        permissions:    permissions
     }
 
     server.server(depends)

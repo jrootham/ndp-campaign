@@ -1,0 +1,22 @@
+/*
+ *  css rules for admin,we expect these to be run on desktops and laptops, possibly tablets
+ */
+
+.enterLabel
+{
+    display:            inline-block;
+    width:              10em;
+}
+
+.enterInput
+{
+    display:            inline-block;
+}
+
+.button
+{
+    display:            inline-block;
+    background-color:   #8080FF;
+    padding:            1%;
+    margin-left:        1%;
+}

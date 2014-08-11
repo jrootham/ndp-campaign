@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "webapp for canvassing with smartphones",
   "dependencies": {
+    "cookies": "^0.5.0",
+    "ent": "^2.0.0",
     "es6-promise": "^1.0.0",
     "formidable": "^1.0.15",
     "react": "^0.11.0",
