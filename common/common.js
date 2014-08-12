@@ -6,14 +6,14 @@
 (function () {
     "use strict"
 
-    var makeDataObject = function(fieldArray, validationArray, getValjue) {
+    var makeDataObject = function(fieldArray) {
         var valid = fieldArray.reduce(function(previous, field, index, array){
-            return previous && validationArray[index](field)
+            return previous && field.validation(field.getValue())
         }. true)
 
         var result = {}
         if (valid) {
-            fieldArray.forEach(function(field){result[field] = getValue(field)})
+            fieldArray.forEach(function(field){result[field.name] = field.getValue()})
         }
         else {
             result = false
