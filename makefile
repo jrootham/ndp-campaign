@@ -38,7 +38,9 @@ ADMIN = proxies/admin/index.html proxies/admin/enter.html proxies/admin/recruit.
 
 NODE = proxies/node/main.js
 
-proxies: $(CANVASSER) $(ADMIN) $(NODE)
+proxies: $(CANVASSER) $(ADMIN) $(NODE) proxies/index.html
+
+proxies/index.html: ship/index.html
 
 # canvasser pages
 
@@ -80,10 +82,14 @@ proxies/node/main.js: \
 proxies/node/bootstrapMain.js: \
 	ship/node/bootstrapMain.js
 
+ship/index.html: index.html
+	scp index.html $(SYSTEM):$(BASE)index.html
+	touch ship/index.html
+
 # browserify dependencies
 
 scripts/canvasserApp.js: canvasser/canvasser.js canvasserDest/canvasserJSX.js \
-	js/fetchData.js js/keyFunctions.js js/serialize.js common/find.js js/message.js
+	    js/fetchData.js js/keyFunctions.js js/serialize.js common/find.js js/message.js
 	browserify canvasser/canvasser.js > scripts/canvasserApp.js
 
 scripts/loadApp.js: canvasser/load.js canvasserDest/loadJSX.js
@@ -92,14 +98,16 @@ scripts/loadApp.js: canvasser/load.js canvasserDest/loadJSX.js
 scripts/signupApp.js: canvasser/signup.js  canvasserDest/signupJSX.js js/message.js
 	browserify canvasser/signup.js > scripts/signupApp.js js/message.js
 
-scripts/recruitApp.js: admin/recruit.js adminDest/recruitJSX.js
-	browserify admin/recruit.js > scripts/recruitApp.js js/message.js
+scripts/recruitApp.js: admin/recruit.js adminDest/recruitJSX.js adminDest/recruitCommonJSX.js js/message.js \
+        common/common.js
+	browserify admin/recruit.js > scripts/recruitApp.js
 
-scripts/enterApp.js: admin/enter.js adminDest/enterJSX.js
-	browserify admin/enter.js > scripts/enterApp.js js/message.js
+scripts/enterApp.js: admin/enter.js adminDest/enterJSX.js  adminDest/recruitCommonJSX.js js/message.js \
+        common/common.js
+	browserify admin/enter.js > scripts/enterApp.js
 
-scripts/assignApp.js: admin/assign.js adminDest/assignJSX.js
-	browserify admin/assign.js > scripts/assignApp.js js/message.js
+scripts/assignApp.js: admin/assign.js adminDest/assignJSX.js js/message.js
+	browserify admin/assign.js > scripts/assignApp.js
 
 
 # clean up the tree

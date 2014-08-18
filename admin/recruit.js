@@ -6,7 +6,7 @@
     "use strict"
 
     var message = require("../js/message")
-    var assignJSX = require("../adminDest/recruitJSX")
+    var recruitJSX = require("../adminDest/recruitJSX")
 
     var depends = {
         message: message

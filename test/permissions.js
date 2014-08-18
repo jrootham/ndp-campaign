@@ -14,6 +14,11 @@
         return true
     }
 
+    var searchRecruits = function(depends, userId) {
+        return true
+    }
+
     exports.enter = enter
     exports.signup = signup
+    exports.searchRecruits = searchRecruits
 })()

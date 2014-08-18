@@ -6,6 +6,7 @@
     "use strict"
 
     var formidable = require('formidable')
+    var url = require("url")
     var config = require("./config")
     var defs = require("../common/defs")
 
@@ -13,7 +14,8 @@
         var tablePointer = depends.routeTable
         if (!tablePointer) depends.fail( response, {error: "No routing table"}, {})
 
-        var pathList = request.url.split('/')
+        var urlObject = url.parse(request.url, true)
+        var pathList = urlObject.pathname.split('/')
 
         if (pathList.length === 0) depends.fail( response, {error: "Empty routing input"}, {})
 
@@ -37,7 +39,7 @@
         }
 
         if (found && found[request.method]) {
-            found[request.method](depends, request, response, data)
+            found[request.method](depends, request, response, data, urlObject.query)
         }
         else {
             response.writeHead(404, "")

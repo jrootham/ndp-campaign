@@ -19,8 +19,11 @@
                 enter: {
                     POST: admin.enter
                 },
+                searchRecruits: {
+                    GET: admin.searchRecruits
+                },
                 signup: {
-                    POST: admin.signup
+                    GET: admin.signup
                 }
 
             }

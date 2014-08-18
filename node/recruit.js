@@ -10,7 +10,7 @@
 
     var userFns = require("../common/recruitFns")
 
-    var signup = function(depends, request, response, data) {
+    var signup = function(depends, request, response, data, query) {
         var dataAccess = depends.dataAccess
         var identifier = data.identifier
 

@@ -7,8 +7,21 @@
 
     var crypto = require("crypto")
 
-    var fieldArray =["firstName", "lastName", "address", "street", "apartment", "postalCode",
-        "homePhone", "cellPhone", "email"]
+    var validate = function(value) {
+        return true
+    }
+
+    var fieldArray =[
+        {name:"firstName", validation:validate},
+        {name:"lastName", validation:validate},
+        {name:"address", validation:validate},
+        {name:"street", validation:validate},
+        {name:"apartment", validation:validate},
+        {name:"postalCode", validation:validate},
+        {name:"homePhone", validation:validate},
+        {name:"cellPhone", validation:validate},
+        {name:"email", validation:validate}
+    ]
 
     var makeToken = function(size) {
         var buffSize = size * 2
@@ -22,7 +35,6 @@
         return result
     }
 
-
     var makeAndStoreCookie = function(depends, recruitId)
     {
         var plainToken = makeToken(4)
@@ -34,7 +46,6 @@
     var save = function(depends, owner, recruit) {
         return depends.dataAccess.createRecruit(owner, recruit)
     }
-
 
     exports.makeToken = makeToken
     exports.makeAndStoreCookie = makeAndStoreCookie

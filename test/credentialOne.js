@@ -11,7 +11,7 @@
         var cookies = new depends.Cookies(request, response)
         var token = cookies.get("token")
 
-        console.log(token)
+        console.log("cookie token", token)
         return 1
     }
 

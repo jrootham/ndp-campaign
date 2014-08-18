@@ -13,19 +13,19 @@
         keys: "../data/keys.json"
     }
 
-    var recruitList = JSON.parse(fs.readFileSync(filenames.recruitList))
-    var identifierList = JSON.parse(fs.readFileSync(filenames.keys))
+    var recruitArray = JSON.parse(fs.readFileSync(filenames.recruitList))
+    var identifierArray = JSON.parse(fs.readFileSync(filenames.keys))
 
     var write = function() {
-        fs.writeFileSync(filenames.recruitList, JSON.stringify(recruitList))
-        fs.writeFileSync(filenames.keys, JSON.stringify(identifierList))
+        fs.writeFileSync(filenames.recruitList, JSON.stringify(recruitArray))
+        fs.writeFileSync(filenames.keys, JSON.stringify(identifierArray))
     }
 
     var createRecruit = function(ownerId, newRecruit) {
-        newRecruit.id = recruitList.length + 1
+        newRecruit.id = recruitArray.length + 1
         newRecruit.owner = ownerId
 
-        recruitList.push(newRecruit)
+        recruitArray.push(newRecruit)
 
         write()
 
@@ -43,7 +43,7 @@
     }
 
     var testAndRemoveIdentifier = function(identifier){
-        var found = identifierList.find(function(current) {current.identifier === identifier  && current.valid})
+        var found = identifierArray.find(function(current) {current.identifier === identifier  && current.valid})
 
         if (found) {
             found.valid = false
@@ -55,7 +55,7 @@
     }
 
     var findHashedToken = function(hashedToken) {
-        var recruit = recruitList.find(function(recruit){
+        var recruit = recruitArray.find(function(recruit){
            recruit.hashedToken ? hashedToken === recruit.hashedToken : false
         })
 
@@ -63,21 +63,33 @@
     }
 
     var saveHashedToken = function(recruitId, hashedToken) {
-        var index = recruitList.findIndex(function(recruit){return recruit.id === recruitId})
-        recruitList[index].hashedToken = hashedToken
+        var index = recruitArray.findIndex(function(recruit){return recruit.id === recruitId})
+        recruitArray[index].hashedToken = hashedToken
     }
 
     var buildRow = function(columnArray, data) {
         var result = {}
         columnArray.forEach(function(column) {
-            if (data[column]) {
-                result[column] = ent.encode(data[column])
+            if (data[column.name]) {
+                result[column.name] = ent.encode(data[column.name])
             }
         })
 
         return result
     }
 
+    var searchRecruits = function(searchValues) {
+        var result = []
+
+        recruitArray.forEach(function(recruit) {
+            if(true) {
+                result.push(recruit)
+            }
+        })
+        return result
+    }
+
+    exports.searchRecruits = searchRecruits
     exports.createRecruit = createRecruit
     exports.testAndRemoveIdentifier = testAndRemoveIdentifier
     exports.saveHashedToken = saveHashedToken

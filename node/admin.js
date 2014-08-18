@@ -8,7 +8,7 @@
 
     var recruitFns = require("../common/recruitFns")
 
-    var enter = function(depends, request, response, data) {
+    var enter = function(depends, request, response, data, query) {
         var owner = depends.credential(depends, request, response)
 
         if (owner > 0) {
@@ -38,15 +38,16 @@
         }
     }
 
-    var select =function(depends, request, response, data) {
+    var searchRecruits = function(depends, request, response, data, query) {
         var owner = depends.credential(depends, request, response)
 
         if (owner > 0) {
-            if (depends.permissions.select(depends, owner)) {
-
+            if (depends.permissions.searchRecruits(depends, owner)) {
+                var searchValues = common.makeDataObject(recruitFields, query)
+                var result = depends.dataAccess.searchRecruits(searchValues)
             }
             else {
-                depends.fail(response, {error:"User not permitted to select recruits"}, {})
+                depends.fail(response, {error:"User not permitted to search for recruits"}, {})
             }
         }
         else {
@@ -54,7 +55,7 @@
         }
     }
 
-    var signup = function(depends, request, response, data) {
+    var signup = function(depends, request, response, data, query) {
         var owner = depends.credential(depends, request, response)
 
         if (owner > 0) {
@@ -72,5 +73,5 @@
 
     exports.enter = enter
     exports.signup = signup
-    exports.select
+    exports.searchRecruitss = searchRecruits
 })()
