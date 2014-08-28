@@ -10,8 +10,8 @@
 
     var React = require("react")
     var recruitFns = require("../common/recruitFns")
-    var common = require("../common/common")
-    var Recruit = require("./recruitCommonJSX").Recruit
+    var common = require("../js/common")
+    var EnterRecruit = require("./recruitCommonJSX").EnterRecruit
 
     var fieldArray = recruitFns.fieldArray
 
@@ -25,7 +25,8 @@
         submit: function() {
             if (!this.state.sent) {
                 this.setState({status:"Sending", sent:true})
-                var result = localDepends.message.post("campaign/admin/enter", common.makeDataObject(fieldArray))
+                var pathArray = ['campaign','admin','enter']
+                var result = localDepends.message.postHTTP(pathArray, common.makeDataObject(fieldArray))
                 result.then(common.makeGoodStatus(this, fieldArray), common.makeErrorStatus(this))
             }
         },

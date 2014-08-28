@@ -8,7 +8,19 @@
 
     var recruitFns = require("../common/recruitFns")
 
-    var enter = function(depends, request, response, data, query) {
+    var copyDataObject = function(fieldArray, source) {
+        var result = {}
+        fieldArray.forEach(function(field) {
+            if (source[field.name]) {
+                result[field.name] = source[field.name]
+            }
+        })
+
+        return result
+    }
+
+
+    var enter = function(depends, request, response, pathArgs, query, data) {
         var owner = depends.credential(depends, request, response)
 
         if (owner > 0) {
@@ -19,59 +31,62 @@
                     var userId = recruitFns.save(depends, owner, recruit)
 
                     if (userId > 0) {
-                        depends.success(response, {}, {})
+                        depends.success(request, response, {}, {})
                     }
                     else {
-                        depends.fail(response, {error:"User save failed"}, {})
+                        depends.fail(request, response, {error:"User save failed"}, {})
                     }
                 }
                 else {
-                    depends.fail(response, {error:"Last name required"}, {})
+                    depends.fail(request, response, {error:"Last name required"}, {})
                 }
             }
             else {
-                depends.fail(response, {error:"User not permitted to enter recruits"}, {})
+                depends.fail(request, response, {error:"User not permitted to enter recruits"}, {})
             }
         }
         else {
-            depends.fail(response, {error:"Device not signed up"}, {})
+            depends.fail(request, response, {error:"Device not signed up"}, {})
         }
     }
 
-    var searchRecruits = function(depends, request, response, data, query) {
+    var searchRecruits = function(depends, request, response, pathArgs, query, data) {
         var owner = depends.credential(depends, request, response)
 
         if (owner > 0) {
             if (depends.permissions.searchRecruits(depends, owner)) {
-                var searchValues = common.makeDataObject(recruitFields, query)
+                var searchValues = copyDataObject(recruitFns.fieldArray, query)
                 var result = depends.dataAccess.searchRecruits(searchValues)
+                depends.success(request, response, result, {})
             }
             else {
-                depends.fail(response, {error:"User not permitted to search for recruits"}, {})
+                depends.fail(request, response, {error:"User not permitted to search for recruits"}, {})
             }
         }
         else {
-            depends.fail(response, {error:"Device not signed up"}, {})
+            depends.fail(request, response, {error:"Device not signed up"}, {})
         }
     }
 
-    var signup = function(depends, request, response, data, query) {
+    var signupRecruit = function(depends, request, response, pathArgs, query, data) {
         var owner = depends.credential(depends, request, response)
 
         if (owner > 0) {
             if (depends.permissions.signup(depends, owner)) {
-
+                var recruitId = parseInt(pathArgs.recruitId, 10)
+                var identifier = recruitFns.makeAndStoreIdentifier(depends, owner, recruitId)
+                depends.success(request, response, {identifier:identifier}, {})
             }
             else {
-                depends.fail(response, {error:"User not permitted to signup recruits"}, {})
+                depends.fail(request, response, {error:"User not permitted to signup recruits"}, {})
             }
         }
         else {
-            depends.fail(response, {error:"Device not signed up"}, {})
+            depends.fail(request, response, {error:"Device not signed up"}, {})
         }
     }
 
     exports.enter = enter
-    exports.signup = signup
-    exports.searchRecruitss = searchRecruits
+    exports.signupRecruit = signupRecruit
+    exports.searchRecruits = searchRecruits
 })()

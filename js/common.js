@@ -90,8 +90,12 @@
 
     var makeErrorStatus = function(that) {
         return function(error) {
-            that.setState({status:error.message, sent:false})
+            showErrorStatus(that, error)
         }
+    }
+
+    var showErrorStatus = function(that, error) {
+        that.setState({status:error.message, sent:false})
     }
 
     exports.fillDataObject = fillDataObject

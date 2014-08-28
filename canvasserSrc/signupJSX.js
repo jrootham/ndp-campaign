@@ -39,7 +39,7 @@
             if (this.state.sent === false) {
                 this.setState({status:"Sending", sent:true})
                 var identifier = document.getElementById("identifier").value
-                var result = localDepends.message.post("campaign/signup", {identifier: identifier})
+                var result = localDepends.message.postHTTP(["campaign","canvasser", "signup"], {identifier: identifier})
                 result.then(makeGoodStatus(this), makeErrorStatus(this))
             }
         },

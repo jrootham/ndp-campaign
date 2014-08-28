@@ -8,24 +8,35 @@
 (function () {
     "use strict"
 
-    var userFns = require("../common/recruitFns")
+    var recruitFns = require("../common/recruitFns")
 
-    var signup = function(depends, request, response, data, query) {
+    var signup = function(depends, request, response, pathArgs, query, data) {
         var dataAccess = depends.dataAccess
         var identifier = data.identifier
 
-        var recruitId = dataAccess.testAndRemoveIdentifier(identifier)
+        var recruit = dataAccess.testAndRemoveIdentifier(identifier)
 
-        if (recruitId > 0)
+        if (recruit)
         {
-            var token = recruitFns.makeAndStoreCookie(depends, recruitId)
-            var cookies = new depends.Cookies(request, response)
-            cookies.set("token", token, {"Max-Age":  (180 * 24 * 60 * 60)})
+            var token = recruitFns.makeAndStoreCookie(depends, recruit.owner, recruit.recruitId)
+            if (token) {
+                var cookies = new depends.Cookies(request, response)
 
-            depends.success(response, {}, {})
+                var options = {
+                    "domain": depends.domain,
+                    "maxAge":  (180 * 24 * 60 * 60 * 1000),
+                    "httpOnly":false
+                }
+                cookies.set("token", token, options)
+
+                depends.success(request, response, {}, {})
+            }
+            else {
+                depends.fail(request, response, {error:"Internal error, recruit not found"}, {})
+            }
         }
         else {
-            depends.fail(response, {error:"Identifier not found"}, {})
+            depends.fail(request, response, {error:"Identifier not found"}, {})
         }
     }
 

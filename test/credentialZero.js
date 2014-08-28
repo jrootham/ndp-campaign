@@ -8,7 +8,6 @@
 
     var credentialZero = function (depends, request, response)
     {
-        console.log(request.headers)
         return 0
     }
 

@@ -16,7 +16,7 @@ ship/$(1)/%: $(1)/%
 	touch ship/$(1)/$$*
 endef
 
-SHIPDIRS=admin canvasser scripts js css node test common
+SHIPDIRS=admin canvasser common css js node scripts test
 
 $(foreach shipdir,$(SHIPDIRS),$(eval $(call SHIP,$(shipdir))))
 
@@ -75,6 +75,7 @@ proxies/admin/assign.html: \
 proxies/node/main.js: \
 	ship/node/main.js  ship/node/recruit.js ship/node/admin.js \
 	ship/node/server.js ship/common/defs.js ship/node/routeTable.js ship/common/recruitFns.js \
+	ship/common/find.js \
 	ship/test/dataAccess.js ship/test/credentialOne.js ship/test/credentialZero.js ship/test/permissions.js
 
 # create superusers
@@ -99,11 +100,11 @@ scripts/signupApp.js: canvasser/signup.js  canvasserDest/signupJSX.js js/message
 	browserify canvasser/signup.js > scripts/signupApp.js js/message.js
 
 scripts/recruitApp.js: admin/recruit.js adminDest/recruitJSX.js adminDest/recruitCommonJSX.js js/message.js \
-        common/common.js
+        js/common.js
 	browserify admin/recruit.js > scripts/recruitApp.js
 
 scripts/enterApp.js: admin/enter.js adminDest/enterJSX.js  adminDest/recruitCommonJSX.js js/message.js \
-        common/common.js
+       	js/common.js
 	browserify admin/enter.js > scripts/enterApp.js
 
 scripts/assignApp.js: admin/assign.js adminDest/assignJSX.js js/message.js

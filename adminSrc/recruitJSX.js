@@ -10,7 +10,7 @@
 
     var React = require("react")
     var recruitFns = require("../common/recruitFns")
-    var common = require("../common/common")
+    var common = require("../js/common")
     var recruitCommonJSX = require("./recruitCommonJSX")
     var EnterRecruit = recruitCommonJSX.EnterRecruit
     var ShowRecruit = recruitCommonJSX.ShowRecruit
@@ -28,10 +28,31 @@
 
         return common.fillDataObject(fieldArray, result)
     }
+
+    var makeFound = function(that) {
+        return function (response) {
+            common.showStatus(that, response, "Found")
+            that.setState({recruitArray: response, index: 0})
+        }
+    }
+
+    var makeSignup = function(that) {
+        return function (response) {
+            common.showStatus(that, response, "Signed up")
+            that.setState({identifier: response.identifier})
+        }
+    }
+
+    var makeError = function(that) {
+        return function (that, error) {
+            common.showErrorStatus(that, error)
+            that.setState({recruitArray: [], index: 0})
+        }
+    }
+
     var SignupRecruit = React.createClass({
         getInitialState: function(){
             return ({
-                recruitId: 0,
                 recruitArray: [],
                 index: 0,
                 identifier: "",
@@ -39,17 +60,38 @@
                 sent:false})
         },
 
-        found: function (response) {
-            common.showStatus(this. response, "Found")
-            this.setState({recruitArray: response})
-        },
-
         search: function() {
             if (!this.state.sent) {
                 this.setState({status:"Sending", sent:true})
-                var response = localDepends.message.get("campaign/admin/searchRecruits",
-                    common.makeDataObject(fieldArray))
-                result.then(this.found(response), common.makeErrorStatus(this))
+                var pathArray = ["campaign", "admin", "searchRecruits"]
+                var response = localDepends.message.getHTTP(pathArray, common.makeDataObject(fieldArray))
+                response.then(makeFound(this), makeError(this))
+            }
+        },
+
+        signup: function() {
+            if (!this.state.sent && this.state.recruitArray.length != 0) {
+                this.setState({status:"Sending", sent:true})
+                var pathArray = [
+                    "campaign",
+                    "admin",
+                    "signupRecruit",
+                    this.state.recruitArray[this.state.index].id
+                ]
+                var response = localDepends.message.postHTTP(pathArray, {})
+                response.then(makeSignup(this), common.makeErrorStatus(this))
+            }
+        },
+
+        next: function() {
+            if (this.state.index < this.state.recruitArray.length - 1) {
+                this.setState({index: this.state.index + 1})
+            }
+        },
+
+        previous: function() {
+            if (this.state.index > 0) {
+                this.setState({index: this.state.index - 1})
             }
         },
 
@@ -64,12 +106,17 @@
                     <ShowRecruit recruit={getElement(this.state.recruitArray, this.state.index)} />
                     <div>
                         <div className="button" onClick={this.search}>Search</div>
+                        <div className="button" onClick={this.previous}>Previous</div>
                         <div className="button" onClick={this.next}>Next</div>
                         <div className="button" onClick={this.signup}>Signup</div>
                     </div>
 
                     <div>
                         {this.state.status}
+                    </div>
+
+                    <div>
+                        {this.state.identifier}
                     </div>
 
                 </div>

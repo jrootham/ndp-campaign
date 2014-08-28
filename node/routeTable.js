@@ -10,25 +10,49 @@
     var recruit = require("./recruit")
     var admin = require("./admin")
 
-    var routeTable = {
-        campaign: {
-            signup: {
-                POST: recruit.signup
-            },
-            admin: {
-                enter: {
-                    POST: admin.enter
-                },
-                searchRecruits: {
-                    GET: admin.searchRecruits
-                },
-                signup: {
-                    GET: admin.signup
-                }
+    var routeTable = [
+        {
+            name: "campaign",
+            next: [
+                {
+                    name: "canvasser",
+                    next: [
+                        {
+                            name: "signup",
+                            POST: recruit.signup
+                        }
+                    ]
 
-            }
+                },
+                {
+                    name: "admin",
+                    next: [
+                        {
+                            name: "enter",
+                            POST: admin.enter
+                        },
+                        {
+                            name: "searchRecruits",
+                            GET: admin.searchRecruits
+                        },
+                        {
+                            name: "signupRecruit",
+                            next: [
+                                {
+                                    name: "recruitId",
+                                    match: {
+                                        maxLength: 23,
+                                        pattern: "\\d+"
+                                    },
+                                    POST: admin.signupRecruit
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
-    }
+    ]
 
     exports.routeTable = routeTable
 })()

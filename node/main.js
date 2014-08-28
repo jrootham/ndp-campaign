@@ -9,15 +9,15 @@
     var http = require('http')
     var Cookies = require('cookies')
     var server = require("./server")
-    var routeTable = require("./routeTable").routeTable
-    var credential = require("../test/credentialOne")
+    var routeTable = require("./routeTable")
+    var recruitFns = require("../common/recruitFns")
     var permissions = require("../test/permissions")
 
     var depends = {
         dataAccess:     dataAccess,
         http:           http,
-        routeTable:     routeTable,
-        credential:     credential.credential,
+        routeTable:     routeTable.routeTable,
+        credential:     recruitFns.credential,
         Cookies:        Cookies,
         permissions:    permissions
     }

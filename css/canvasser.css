@@ -1,6 +1,8 @@
-body
-{
-    font-size:          40pt;
+@media  min-resolution: 100dpcm {
+    body
+    {
+        font-size:          40pt;
+    }
 }
 
 input

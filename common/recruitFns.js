@@ -7,6 +7,7 @@
 
     var crypto = require("crypto")
 
+
     var validate = function(value) {
         return true
     }
@@ -35,19 +36,48 @@
         return result
     }
 
-    var makeAndStoreCookie = function(depends, recruitId)
+    var makeAndStoreIdentifier = function(depends, ownerId, recruitId) {
+        var identifier = makeToken(2)
+        depends.dataAccess.insertIdentifier(ownerId, recruitId, identifier)
+        return identifier
+    }
+
+    var makeAndStoreCookie = function(depends, ownerId, recruitId)
     {
+        var result = false
         var plainToken = makeToken(4)
         var hashedToken =  crypto.createHash('sha256').update(plainToken).digest("hex")
-        depends.dataAccess.saveHashedToken(recruitId, hashedToken)
-        return plainToken
+        if (depends.dataAccess.saveHashedToken(ownerId, recruitId, hashedToken)) {
+            result = plainToken
+        }
+        return result
     }
 
     var save = function(depends, owner, recruit) {
         return depends.dataAccess.createRecruit(owner, recruit)
     }
 
+    var credential = function (depends, request, response)
+    {
+        var cookies = new depends.Cookies(request, response)
+        var plainToken = cookies.get("token")
+        var result = 0
+
+        if (plainToken) {
+            var hashedToken =  crypto.createHash('sha256').update(plainToken).digest("hex")
+
+            result = depends.dataAccess.findHashedToken(hashedToken)
+        }
+        else {
+            result = 0
+        }
+
+        return result
+    }
+
+    exports.credential = credential
     exports.makeToken = makeToken
+    exports.makeAndStoreIdentifier = makeAndStoreIdentifier
     exports.makeAndStoreCookie = makeAndStoreCookie
     exports.save = save
     exports.fieldArray = fieldArray

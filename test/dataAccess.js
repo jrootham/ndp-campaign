@@ -5,6 +5,7 @@
 (function(){
     "use strict"
 
+    require("../common/find").setFind()             // Modify Array prototype
     var fs = require("fs")
     var ent = require("ent")
 
@@ -37,34 +38,48 @@
             timestamp: new Date(),
             ownerId: ownerId,
             recruitId: recruitId,
-            identifier: identifier,
-            valid: true
+            identifier: identifier
         }
+
+        identifierArray.push(key)
+        write()
     }
 
     var testAndRemoveIdentifier = function(identifier){
-        var found = identifierArray.find(function(current) {current.identifier === identifier  && current.valid})
+        var index = identifierArray.findIndex(function(current) {
+            return current.identifier === identifier
+        })
 
-        if (found) {
-            found.valid = false
-            return found.recruitID
+        if (index != -1) {
+            var found = identifierArray[index]
+            identifierArray.splice(index, 1)
+            write()
+            return found
         }
         else {
-            return 0
+            return false
         }
     }
 
     var findHashedToken = function(hashedToken) {
         var recruit = recruitArray.find(function(recruit){
-           recruit.hashedToken ? hashedToken === recruit.hashedToken : false
+           return recruit.hashedToken ? hashedToken === recruit.hashedToken : false
         })
 
         return recruit ? recruit.id : 0
     }
 
-    var saveHashedToken = function(recruitId, hashedToken) {
-        var index = recruitArray.findIndex(function(recruit){return recruit.id === recruitId})
-        recruitArray[index].hashedToken = hashedToken
+    var saveHashedToken = function(ownerId, recruitId, hashedToken) {
+        var result = false
+        var found = recruitArray.find(function(recruit){return recruit.id === recruitId})
+
+        if (found) {
+            found.hashedToken = hashedToken
+            write()
+            result = true
+        }
+
+        return result
     }
 
     var buildRow = function(columnArray, data) {
@@ -82,7 +97,11 @@
         var result = []
 
         recruitArray.forEach(function(recruit) {
-            if(true) {
+            var matched = Object.keys(searchValues).reduce(function(previous, key, index, keys) {
+                return previous && searchValues[key] === recruit[key]
+            }, true)
+
+            if(matched) {
                 result.push(recruit)
             }
         })
@@ -93,6 +112,7 @@
     exports.createRecruit = createRecruit
     exports.testAndRemoveIdentifier = testAndRemoveIdentifier
     exports.saveHashedToken = saveHashedToken
+    exports.findHashedToken = findHashedToken
     exports.insertIdentifier = insertIdentifier
     exports.createRecruit = createRecruit
     exports.buildRow = buildRow
