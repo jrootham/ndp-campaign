@@ -86,7 +86,13 @@
         }
     }
 
+    var permissionRoot = function(depends, request, response, pathArgs, query, data) {
+        var owner = depends.credential(depends, request, response)
+
+    }
+
     exports.enter = enter
     exports.signupRecruit = signupRecruit
     exports.searchRecruits = searchRecruits
+    exports.permissionRoot = permissionRoot
 })()

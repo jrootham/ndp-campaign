@@ -47,6 +47,10 @@
                                     POST: admin.signupRecruit
                                 }
                             ]
+                        },
+                        {
+                            name: "permissionRoot",
+                            GET: admin.permissionRoot
                         }
                     ]
                 }
