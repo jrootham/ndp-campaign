@@ -58,7 +58,7 @@
                   resolve(req.response)
               }// silly safari
               else {
-                  reject(Error(req.statusText));
+                  reject(Error("Network Error " + req.statusText));
                 }
             };
 
