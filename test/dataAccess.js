@@ -22,7 +22,7 @@
         fs.writeFileSync(filenames.keys, JSON.stringify(identifierArray))
     }
 
-    var createRecruit = function(ownerId, newRecruit) {
+    var createRecruit = function(depends, ownerId, newRecruit) {
         newRecruit.id = recruitArray.length + 1
         newRecruit.owner = ownerId
 
@@ -33,7 +33,7 @@
         return newRecruit.id
     }
 
-    var insertIdentifier = function(ownerId, recruitId, identifier) {
+    var insertIdentifier = function(depends, ownerId, recruitId, identifier) {
         var key = {
             timestamp: new Date(),
             ownerId: ownerId,
@@ -45,7 +45,7 @@
         write()
     }
 
-    var testAndRemoveIdentifier = function(identifier){
+    var testAndRemoveIdentifier = function(depends, identifier){
         var index = identifierArray.findIndex(function(current) {
             return current.identifier === identifier
         })
@@ -61,7 +61,7 @@
         }
     }
 
-    var findHashedToken = function(hashedToken) {
+    var findHashedToken = function(depends, hashedToken) {
         var recruit = recruitArray.find(function(recruit){
            return recruit.hashedToken ? hashedToken === recruit.hashedToken : false
         })
@@ -69,7 +69,7 @@
         return recruit ? recruit.id : 0
     }
 
-    var saveHashedToken = function(ownerId, recruitId, hashedToken) {
+    var saveHashedToken = function(depends, ownerId, recruitId, hashedToken) {
         var result = false
         var found = recruitArray.find(function(recruit){return recruit.id === recruitId})
 
@@ -82,7 +82,7 @@
         return result
     }
 
-    var buildRow = function(columnArray, data) {
+    var buildRow = function(depends, columnArray, data) {
         var result = {}
         columnArray.forEach(function(column) {
             if (data[column.name]) {
@@ -93,7 +93,7 @@
         return result
     }
 
-    var searchRecruits = function(searchValues) {
+    var searchRecruits = function(depends, searchValues) {
         var result = []
 
         recruitArray.forEach(function(recruit) {
@@ -106,6 +106,11 @@
             }
         })
         return result
+    }
+
+    var getRecruit = function(depends, id) {
+        var result = searchRecruits({id:id})
+        return (result.length === 1) ? result[0] : false
     }
 
     exports.searchRecruits = searchRecruits

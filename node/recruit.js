@@ -14,7 +14,7 @@
         var dataAccess = depends.dataAccess
         var identifier = data.identifier
 
-        var recruit = dataAccess.testAndRemoveIdentifier(identifier)
+        var recruit = dataAccess.testAndRemoveIdentifier(depends, identifier)
 
         if (recruit)
         {

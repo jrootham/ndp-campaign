@@ -10,53 +10,50 @@
     var recruit = require("./recruit")
     var admin = require("./admin")
 
-    var routeTable = [
-        {
-            name: "campaign",
-            next: [
-                {
-                    name: "canvasser",
-                    next: [
-                        {
-                            name: "signup",
-                            POST: recruit.signup
-                        }
-                    ]
-
-                },
-                {
-                    name: "admin",
-                    next: [
-                        {
-                            name: "enter",
-                            POST: admin.enter
-                        },
-                        {
-                            name: "searchRecruits",
-                            GET: admin.searchRecruits
-                        },
-                        {
-                            name: "signupRecruit",
-                            next: [
-                                {
-                                    name: "recruitId",
-                                    match: {
-                                        maxLength: 23,
-                                        pattern: "\\d+"
-                                    },
-                                    POST: admin.signupRecruit
-                                }
-                            ]
-                        },
-                        {
-                            name: "permissionRoot",
-                            GET: admin.permissionRoot
-                        }
-                    ]
+    var routeTable = {
+        campaign: {
+            canvasser: {
+                signup: {
+                    POST: recruit.signup
                 }
-            ]
+            },
+            admin: {
+                enter: {
+                    POST: admin.enter
+                },
+
+                searchRecruits: {
+                    GET: admin.searchRecruits
+                },
+
+                signupRecruit: {
+                    recruitId: {
+                        match: {
+                            maxLength: 23,
+                            pattern: "\\d+"
+                        },
+                        next: {
+                            POST: admin.signupRecruit
+                        }
+                    }
+                },
+
+                permission: {
+                    options: {
+                        GET: admin.permissionOptions
+                    },
+
+                    location: {
+                        GET: admin.locationPermission
+                    },
+
+                    question: {
+                        GET: admin.questionPermission
+                    }
+                }
+            }
         }
-    ]
+    }
 
     exports.routeTable = routeTable
 })()

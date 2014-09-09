@@ -18,7 +18,12 @@
         return true
     }
 
+    var assign = function(depends, userId) {
+        return false
+    }
+
     exports.enter = enter
     exports.signup = signup
     exports.searchRecruits = searchRecruits
+    exports.assign = assign
 })()

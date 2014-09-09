@@ -73,10 +73,10 @@
         }
     }
 
-    var makeGoodStatus = function(that, fieldArray) {
+    var makeSentStatus = function(that, fieldArray) {
         return function(response) {
             if (response.success){
-                that.setState({status:"Sent: OK", sent:false})
+                that.setState({status:"Sent", sent:false})
                 emptyInputs(fieldArray)
             }
             else {
@@ -102,6 +102,6 @@
     exports.showStatus = showStatus
     exports.makeDataObject = makeDataObject
     exports.emptyInputs = emptyInputs
-    exports.makeGoodStatus = makeGoodStatus
+    exports.makeSentStatus = makeSentStatus
     exports.makeErrorStatus = makeErrorStatus
 })()

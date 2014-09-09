@@ -6,12 +6,12 @@
 (function () {
     "use strict"
 
-    var message = require("../js/message")
-    var enterJSX = require("../adminDest/enterJSX")
+    var message = require("../../js/message")
+    var assignJSX = require("../../adminDest/assignJSX")
 
     var depends = {
         message: message
     }
 
-    enterJSX.main(depends)
+    assignJSX.main(depends)
 })()

@@ -36,30 +36,35 @@
             var current = pathList.shift()
             searched += "/" + current
 
-            found = tablePointer.find(function(entry) {
-                var result = false
+            found = tablePointer[current]
+            if (found) {
+                tablePointer = found
+            }
+            else{
+                var key = Object.keys(tablePointer).find(function (theKey) {
+                    var result = false
 
-                if (entry.match) {
-                    result = (current.length  <= entry.match.maxLength)
-                    if (result) {
-                       result = (new RegExp(entry.match.pattern)).test(current)
+                    var match = tablePointer[theKey].match
+                    if (match) {
+                        result = (current.length <= match.maxLength)
+                        if (result) {
+                            result = (new RegExp(match.pattern)).test(current)
+                        }
                     }
+
+                    return result
+                })
+
+                console.log("key", key)
+                if (key) {
+                    pathArgs[key] = current
+                    found = tablePointer[key].next
+
+                    console.log(found)
                 }
                 else {
-                    result = current === entry.name
+                    break
                 }
-
-                return result
-            })
-
-            if (found) {
-                tablePointer = found.next
-                if (found.match) {
-                    pathArgs[found.name] = current
-                }
-            }
-            else {
-                break
             }
         }
 
@@ -67,7 +72,8 @@
             found[request.method](depends, request, response, pathArgs, pathURL.query, data)
         }
         else {
-            sendHeaders(response, 404, {})
+            console.log("Searched:", searched)
+            sendHeaders(request, response, 404, {})
             response.end()
         }
     }

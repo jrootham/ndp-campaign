@@ -5,8 +5,8 @@
 (function() {
     "use strict"
 
-    var message = require("../js/message")
-    var recruitJSX = require("../adminDest/recruitJSX")
+    var message = require("../../js/message")
+    var recruitJSX = require("../../adminDest/recruitJSX")
 
     var depends = {
         message: message

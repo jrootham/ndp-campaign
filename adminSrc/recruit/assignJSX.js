@@ -1,6 +1,8 @@
 /** @jsx React.DOM */
 
 /**
+ * AssignJSX
+ *
  * Created by jrootham on 06/08/14.
  *
  * Copyright © 2014 Jim Rootham
@@ -9,17 +11,19 @@
     "use strict"
 
     var React = require("react")
-    var common = require("../js/commom")
-    var permissions = require("./PermissionsJSX")
-
-    var localDepends
+    var common = require("../../js/common")
+    var permissions = require("./../permissionsJSX")
+    var selectRecruit = require("./../selectRecruitJSX")
+    var SelectRecruit = selectRecruit.SelectRecruit
     var Permissions = permissions.Permissions
 
-    var Question = React.createClass({
+    var localDepends
+
+    var Questions = React.createClass({
         render: function() {
             return(
                 <div>
-                Question
+                Questions
                 </div>
                 )
         }
@@ -29,11 +33,12 @@
         render: function() {
             return (
                 <div>
+                    <SelectRecruit />
                     <div>
-                        <Permission />
+                        <Permissions />
                     </div>
                     <div>
-                        <Question />
+                        <Questions />
                     </div>
                 </div>
             )
@@ -44,10 +49,14 @@
         React.renderComponent(<Assign />, document.getElementById('body'))
     }
 
+    var initialLoad = function() {
+
+    }
+
     var main = function(depends) {
         localDepends = depends
-        permissions.getRootArray()
-        render()
+        selectRecruit.setDepends(depends)
+        initialLoad()
     }
 
     exports.main = main

@@ -9,9 +9,9 @@
     "use strict"
 
     var React = require("react")
-    var recruitFns = require("../common/recruitFns")
-    var common = require("../js/common")
-    var EnterRecruit = require("./recruitCommonJSX").EnterRecruit
+    var recruitFns = require("../../common/recruitFns")
+    var common = require("../../js/common")
+    var EnterRecruit = require("./../recruitCommonJSX").EnterRecruit
 
     var fieldArray = recruitFns.fieldArray
 
@@ -27,7 +27,7 @@
                 this.setState({status:"Sending", sent:true})
                 var pathArray = ['campaign','admin','enter']
                 var result = localDepends.message.postHTTP(pathArray, common.makeDataObject(fieldArray))
-                result.then(common.makeGoodStatus(this, fieldArray), common.makeErrorStatus(this))
+                result.then(common.makeSentStatus(this, fieldArray), common.makeErrorStatus(this))
             }
         },
 

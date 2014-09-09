@@ -25,3 +25,16 @@
     padding:            1%;
     margin-left:        1%;
 }
+
+.blockBox
+{
+    padding:            1%;
+    border:             2px solid black;
+    margin:             1%;
+}
+
+.blockBuffer
+{
+    padding:            0.25%;
+    margin:             0.25%;
+}
