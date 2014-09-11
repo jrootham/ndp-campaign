@@ -12,15 +12,33 @@
     "use strict"
 
     var React = require("react")
+    var common = require("../../js/common")
+
+    var POSTALCODE_LENGTH
 
     var EnterPostalcode = React.createClass({
         getInitialState: function(){
             return ({status: " ", sent:false})
         },
 
+        makeSetCode: function(){
+            return function() {
+
+                common.setSentStatus(response)
+            }
+        },
+
         keystroke: function (event) {
-            var text = document.getElementById("enterPostalcode").value
-            console.log("text", text)
+            var code = document.getElementById("enterPostalcode").value
+
+            if (code.length == POSTALCODE_LENGTH) {
+                if (!this.state.sent) {
+                    this.setState({status:"Sending", sent:true})
+                    var pathArray = ['campaign','admin','getPostalcode']
+                    var result = localDepends.message.getHTTP(pathArray, {postalcode:code})
+                    result.then(this.makeSetCode(), common.makeErrorStatus(this))
+                }
+            }
         },
 
         render: function() {

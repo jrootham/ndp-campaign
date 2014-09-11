@@ -73,18 +73,15 @@
         }
     }
 
-    var makeSentStatus = function(that, fieldArray) {
-        return function(response) {
-            if (response.success){
-                that.setState({status:"Sent", sent:false})
-                emptyInputs(fieldArray)
-            }
-            else {
-                that.setState({
-                    status:response.error,
-                    sent:false
-                })
-            }
+    var setSentStatus = function(response) {
+        if (response.success){
+            that.setState({status:"Sent", sent:false})
+        }
+        else {
+            that.setState({
+                status:response.error,
+                sent:false
+            })
         }
     }
 

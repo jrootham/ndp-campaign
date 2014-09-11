@@ -22,12 +22,17 @@
             return ({status: " ", sent:false})
         },
 
+        fill: function() {
+            common.setSentStatus(this)
+            emptyInputs(fieldArray)
+        },
+
         submit: function() {
             if (!this.state.sent) {
                 this.setState({status:"Sending", sent:true})
                 var pathArray = ['campaign','admin','enter']
                 var result = localDepends.message.postHTTP(pathArray, common.makeDataObject(fieldArray))
-                result.then(common.makeSentStatus(this, fieldArray), common.makeErrorStatus(this))
+                result.then(fill, common.makeErrorStatus(this))
             }
         },
 
