@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 /**
- * commonJSX
+ * commonJSX.js
  *
  * Created by jrootham on 08/09/14.
  *

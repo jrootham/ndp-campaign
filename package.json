@@ -7,9 +7,11 @@
     "ent": "^2.0.0",
     "es6-promise": "^1.0.0",
     "formidable": "^1.0.15",
+    "mysql2": "^0.12.5",
     "pg": "^3.4.1",
     "pg.js": "^3.4.2",
     "react": "^0.11.0",
+    "st": "^0.5.2",
     "validator": "^3.16.1"
   },
   "devDependencies": {

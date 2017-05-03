@@ -1,5 +1,10 @@
 /**
+ *
+ * defs.js
+ *
  * Created by jrootham on 31/07/14.
+ *
+ * Copyright © 2014 Jim Rootham
  */
 
 (function(){

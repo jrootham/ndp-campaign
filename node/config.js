@@ -5,5 +5,8 @@
 (function(){
     "use strict"
 
-    exports.server = 'testcanvas.net'
+    exports.server = '127.0.0.1'
+	exports.database = 'campaign'
+	exports.user = 'testcampaign'
+    exports.password = 'foo55bar'
 })()

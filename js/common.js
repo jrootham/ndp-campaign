@@ -1,4 +1,6 @@
 /**
+ * common.js
+ *
  * Created by jrootham on 10/08/14.
  *
  * Copyright © 2014 Jim Rootham
@@ -73,7 +75,7 @@
         }
     }
 
-    var setSentStatus = function(response) {
+    var setSentStatus = function(that, response) {
         if (response.success){
             that.setState({status:"Sent", sent:false})
         }
@@ -85,12 +87,6 @@
         }
     }
 
-    var makeErrorStatus = function(that) {
-        return function(error) {
-            showErrorStatus(that, error)
-        }
-    }
-
     var showErrorStatus = function(that, error) {
         that.setState({status:error.message, sent:false})
     }
@@ -99,6 +95,6 @@
     exports.showStatus = showStatus
     exports.makeDataObject = makeDataObject
     exports.emptyInputs = emptyInputs
-    exports.makeSentStatus = makeSentStatus
+    exports.setSentStatus = setSentStatus
     exports.makeErrorStatus = makeErrorStatus
 })()
